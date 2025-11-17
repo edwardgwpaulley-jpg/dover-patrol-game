@@ -18,7 +18,9 @@ npm run dev
 
 ## Deployment
 
-This app can be deployed to:
+This app is deployed on Railway and can be accessed via the public URL provided by Railway.
+
+This app can also be deployed to:
 - **Railway** (recommended): https://railway.app
 - **Render**: https://render.com
 - **Fly.io**: https://fly.io
