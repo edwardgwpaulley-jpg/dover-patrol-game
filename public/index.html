@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dover Patrol Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div id="room-setup" class="screen">
+            <h1>Dover Patrol Game</h1>
+            <div class="room-controls">
+                <div id="create-room-section">
+                    <button id="create-room-btn">Create Room</button>
+                    <div id="room-code-display" class="hidden">
+                        <h3>Your Room Code:</h3>
+                        <div id="room-code-text" class="room-code-large"></div>
+                        <p>Share this code with your friend to let them join</p>
+                    </div>
+                </div>
+                <div id="join-room-section">
+                    <h3>Join a Room</h3>
+                    <input type="text" id="room-code-input" placeholder="Enter room code">
+                    <button id="join-room-btn">Join Room</button>
+                </div>
+                <div id="room-status"></div>
+            </div>
+        </div>
+
+        <div id="placement-screen" class="screen hidden">
+            <div id="room-code-corner" class="room-code-corner hidden">Room: <span id="room-code-corner-text"></span></div>
+            <div id="turn-indicator-corner-placement" class="turn-indicator-corner hidden" style="top: 20px; right: 20px;">Turn: <span id="turn-indicator-text-placement"></span></div>
+            <h2 id="placement-title">Place Your Pieces</h2>
+            <div id="placement-info">
+                <p id="placement-instructions">Place all your pieces in your designated area</p>
+                <p>Your opponent cannot see which pieces you place</p>
+            </div>
+            <div id="error-messages-placement" class="error-messages-container"></div>
+            <div class="game-container">
+                <div id="lost-pieces-left-placement" class="lost-pieces-side">
+                    <h3>Opponent's Lost Pieces</h3>
+                    <div id="lost-pieces-list-left-placement"></div>
+                </div>
+                <div id="piece-selector">
+                    <h3>Your Pieces</h3>
+                    <div id="pieces-list"></div>
+                    <button id="random-setup-btn">Random Setup</button>
+                    <button id="confirm-placement-btn" disabled>Confirm Placement</button>
+                    <button id="end-turn-btn" class="hidden" style="margin-top: 20px;">End Turn</button>
+                </div>
+                <div id="board-container">
+                    <canvas id="game-board"></canvas>
+                </div>
+                <div id="lost-pieces-right-placement" class="lost-pieces-side">
+                    <h3>Your Lost Pieces</h3>
+                    <div id="lost-pieces-list-right-placement"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="starting-player-screen" class="screen hidden">
+            <div id="room-code-corner-game" class="room-code-corner hidden">Room: <span id="room-code-corner-text-game"></span></div>
+            <h2>Select Starting Player</h2>
+            <div id="starting-player-info">
+                <p>Both players have placed their pieces. Choose who goes first:</p>
+            </div>
+            <div class="starting-player-options">
+                <button id="player1-start-btn">Player 1 Starts</button>
+                <button id="player2-start-btn">Player 2 Starts</button>
+                <button id="random-start-btn">Random</button>
+            </div>
+            <div id="waiting-for-start" class="hidden">
+                <p>Waiting for host to select starting player...</p>
+            </div>
+        </div>
+
+        <div id="game-screen" class="screen hidden">
+            <div id="room-code-corner-game" class="room-code-corner hidden">Room: <span id="room-code-corner-text-game"></span></div>
+            <div id="turn-indicator-corner" class="turn-indicator-corner hidden">Turn: <span id="turn-indicator-text"></span></div>
+            <div class="game-header">
+                <div id="game-info">
+                    <span id="current-player-indicator"></span>
+                    <span id="phase-indicator"></span>
+                </div>
+                <button id="end-turn-btn">End Turn</button>
+            </div>
+            <div id="error-messages-game" class="error-messages-container"></div>
+            <div class="game-container">
+                <div id="lost-pieces-left-game" class="lost-pieces-side">
+                    <h3>Opponent's Lost Pieces</h3>
+                    <div id="lost-pieces-list-left-game"></div>
+                </div>
+                <div id="side-panel">
+                    <div id="selected-piece-info"></div>
+                    <div id="game-messages"></div>
+                </div>
+                <div id="board-container">
+                    <canvas id="game-board"></canvas>
+                </div>
+                <div id="lost-pieces-right-game" class="lost-pieces-side">
+                    <h3>Your Lost Pieces</h3>
+                    <div id="lost-pieces-list-right-game"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="game-over-screen" class="screen hidden">
+            <h2 id="winner-message"></h2>
+            <button id="new-game-btn">New Game</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
+

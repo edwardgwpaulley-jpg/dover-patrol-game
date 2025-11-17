@@ -1,0 +1,64 @@
+Dover Patrol Game - an Edwardian Naval Strategy Game
+two player game, the aim is to capture the opposition base. first person into the opponents base wins
+
+The Board 
+it is 12 squares tall, 8 squares wide. the users base is 1st row, 3rd coloumn. opposition base is 12th row 6th coloumn. 
+
+Start of the game:
+The user and the opponent lay all of their pieces on the board. I cannot see what pieces my opponent has placed and they cannot see mine. all we can see is what square the oppositions pieces are on, not what piece fills the square. 
+
+at the start the user can only place their pieces in the 1st to 5th rows, opponent in the 8th to 12th rows.
+at the start the 6th and 7th rows must remain empty
+
+Movement:
+all pieces can only move into empty squares. they can only move backwards, forwards, left or right, never diagonally. 
+
+each piece can only move 1 square at a time, unless specified otherwise. 
+
+a user or opponent can move as many pieces as they wish each go, but each piece can only be moved once. 
+
+a user or opponent, can attack with each piece once per go, to attack they inform the opponent of the piece they wish to attack, then both pieces are revealed to both players. The piece with the highest rank wins, the piece with the lowest rank is removed from the game. if the winning piece has not been moved yet that go, it call fill the space left by the defeated piece. 
+
+you cannot attack sideways, or backwards, you can only attack the piece in the square directly in front of the attacking piece. 
+
+The pieces
+- most pieces have a number, and the number dictates what pieces it can destroy, when the user attacks with that piece if its number is higher, then the opposition piece is removed
+Normal Pieces 
+Rank - Name - Special power ( if applicable)
+ 1- Patrol Boat - can move up to two spaces at a time
+2 - Torpedo Boat - kills everything lower than a two, also kills submarines, and minesweepers
+3-               - Kills everything lower than a three
+4-               - Kills everything lower than a four, also kills minelayers, and flying boats
+5 -              - Kills everything lower than a Five,
+6 -              - Kills everything lower than a six,
+7 -              - Kills everything lower than a seven,
+8 - Battle Squadron - Kills everything lower than an 8, 
+9 - Vice Flagship - Kills everything lower than a 9,
+10 - Flagship - Kills everything lower than a 10,
+
+Special pieces
+
+Name - Special Power
+Mines - cannot move at all, kills everything, killed by minesweepers, when they kill something the mine is also removed from the board
+Flying Boats - cannot kill anything, only killed by 4s, can jumper over pieces and move up to two squares at a time.
+Minelayers - cannot attack, but when attacked kill everything but killed by mines and 4s 
+Submarines - kill everything, except 2s and minelayers, killed by minelayers, mines, 2s
+Minesweepers - kills mines, defeated by everything else
+
+frequency of each piece
+Mines - 3
+Flying Boats - 1
+Minelayers - 1
+Submarines - 3
+Minesweepers - 2
+
+1 - 5
+2 - 5
+3 - 4
+4 - 4
+5 - 4
+6 - 3
+7 - 2
+8 - 1
+9 - 1
+10 -1
