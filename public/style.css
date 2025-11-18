@@ -9,11 +9,13 @@ body {
     background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
     color: #fff;
     min-height: 100vh;
-    padding: 20px;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
 }
 
 #app {
-    max-width: 1400px;
+    width: 100%;
     margin: 0 auto;
 }
 
@@ -21,7 +23,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .screen.hidden {
@@ -35,8 +43,9 @@ h1 {
 }
 
 h2 {
-    font-size: 2em;
-    margin-bottom: 10px;
+    font-size: 1.5em;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .room-controls {
@@ -128,16 +137,20 @@ button:disabled {
 
 .game-container {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
 }
 
 #board-container {
-    background: rgba(255,255,255,0.1);
-    padding: 20px;
+    background: transparent;
+    padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    overflow: auto;
+    box-shadow: none;
+    flex-shrink: 0;
 }
 
 #game-board {
@@ -149,10 +162,11 @@ button:disabled {
 
 #piece-selector {
     background: rgba(255,255,255,0.1);
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
-    min-width: 250px;
-    max-height: 600px;
+    min-width: 180px;
+    max-width: 200px;
+    max-height: 500px;
     overflow-y: auto;
 }
 
@@ -203,27 +217,14 @@ button:disabled {
     margin: 5px 0;
 }
 
-.game-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-    margin-bottom: 20px;
-}
-
-#game-info {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
 
 #side-panel {
     background: rgba(255,255,255,0.1);
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
-    min-width: 250px;
-    max-height: 600px;
+    min-width: 160px;
+    max-width: 180px;
+    max-height: 300px;
     overflow-y: auto;
 }
 
@@ -235,26 +236,14 @@ button:disabled {
 }
 
 .lost-pieces-side {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 15px;
+    padding: 10px;
     background: rgba(0,0,0,0.7);
     border-radius: 10px;
-    min-width: 180px;
-    max-height: 400px;
+    min-width: 160px;
+    max-width: 180px;
+    max-height: 300px;
     overflow-y: auto;
-    z-index: 100;
-}
-
-#lost-pieces-left-placement,
-#lost-pieces-left-game {
-    left: 20px;
-}
-
-#lost-pieces-right-placement,
-#lost-pieces-right-game {
-    right: 20px;
+    margin-top: 10px;
 }
 
 .lost-pieces-side h3 {
@@ -303,28 +292,120 @@ button:disabled {
     background: rgba(0,255,0,0.3);
 }
 
-/* Error messages above the board */
-.error-messages-container {
+/* Left and right side panels */
+#left-side-panel,
+#left-side-panel-placement {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 180px;
+    max-width: 200px;
+}
+
+#right-side-panel,
+#right-side-panel-placement {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 180px;
+    max-width: 200px;
+}
+
+#side-panel-placement {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 160px;
+    max-width: 180px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#selected-piece-info-placement {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+#game-messages-placement {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Room code in left panel */
+.room-code-left {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.room-code-left h3 {
+    font-size: 0.9em;
+    margin-bottom: 5px;
+    color: #FFD700;
+}
+
+.room-code-text {
+    font-family: 'Courier New', monospace;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #FFD700;
+    letter-spacing: 0.1em;
+}
+
+/* Game info in left panel */
+#game-info-left,
+#game-info-left-placement {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+#game-info-left button,
+#game-info-left-placement button {
     width: 100%;
-    max-width: 1200px;
-    margin: 10px auto;
+    margin-top: 5px;
+}
+
+#placement-info {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9em;
+}
+
+#placement-info p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+/* Error messages in left panel */
+.error-messages-container {
     min-height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .error-message {
     background: rgba(255, 0, 0, 0.2);
     border: 2px solid #ff0000;
     color: #ff0000;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 1.1em;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
     font-weight: bold;
     text-align: center;
     box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
     animation: errorPulse 0.3s ease-in-out;
+    width: 100%;
 }
 
 @keyframes errorPulse {

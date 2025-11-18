@@ -19,8 +19,8 @@ const ctx = canvas.getContext('2d');
 
 const BOARD_WIDTH = 8;
 const BOARD_HEIGHT = 12;
-const CELL_WIDTH = 120; // Wider cells
-const CELL_HEIGHT = 80; // Shorter cells to fit on screen
+const CELL_WIDTH = 114; // Wider cells (reduced by 5%)
+const CELL_HEIGHT = 76; // Shorter cells to fit on screen (reduced by 5%)
 const CANVAS_WIDTH = BOARD_WIDTH * CELL_WIDTH;
 const CANVAS_HEIGHT = BOARD_HEIGHT * CELL_HEIGHT;
 
@@ -261,7 +261,7 @@ socket.on('game-state', (state) => {
 });
 
 socket.on('piece-moved', (data) => {
-  addMessage(`Piece moved from (${data.fromX}, ${data.fromY}) to (${data.toX}, ${data.toY})`);
+  // Piece movement is visible on the board, no need for message log
 });
 
 socket.on('piece-placed', (data) => {
@@ -333,7 +333,7 @@ socket.on('combat-result', (data) => {
   const isMyAttack = attacker.player === gameState.playerIndex;
   const isMyDefense = defender.player === gameState.playerIndex;
   
-  addMessage(`Combat: ${attacker.piece} vs ${defender.piece} - ${result.message}`, 'success');
+  // Combat result is visible on the board, no need for message log
   
   // Reveal the defender piece temporarily (it's already revealed in gameState from server)
   // Set a timer to hide it after 30 seconds
@@ -501,8 +501,11 @@ socket.on('move-error', (error) => {
 
 function updateRoomCodeCorner(code) {
   if (code) {
-    document.getElementById('room-code-corner-text').textContent = code;
-    document.getElementById('room-code-corner-text-game').textContent = code;
+    // Update left panel room codes
+    const leftPlacement = document.getElementById('room-code-left-text-placement');
+    const leftGame = document.getElementById('room-code-left-text');
+    if (leftPlacement) leftPlacement.textContent = code;
+    if (leftGame) leftGame.textContent = code;
   }
 }
 
@@ -515,16 +518,28 @@ function updateUI() {
     document.getElementById('placement-screen').classList.remove('hidden');
     document.getElementById('starting-player-screen').classList.add('hidden');
     document.getElementById('game-screen').classList.add('hidden');
-    // Show room code in corner
-    document.getElementById('room-code-corner').classList.remove('hidden');
-    document.getElementById('room-code-corner-game').classList.add('hidden');
+    // Show room code in left panel
+    const roomCodeLeftPlacement = document.getElementById('room-code-left-placement');
+    if (roomCodeLeftPlacement) roomCodeLeftPlacement.classList.remove('hidden');
+    
+    // Show placement-specific elements
+    const pieceSelector = document.getElementById('piece-selector');
+    if (pieceSelector) pieceSelector.style.display = 'block';
+    const placementInfo = document.getElementById('placement-info');
+    if (placementInfo) placementInfo.style.display = 'block';
+    const placementTitle = document.getElementById('placement-title');
+    if (placementTitle) placementTitle.style.display = 'block';
+    const gameInfoLeft = document.getElementById('game-info-left-placement');
+    if (gameInfoLeft) gameInfoLeft.classList.add('hidden');
     
     // Update placement instructions
     const placementInstructions = document.getElementById('placement-instructions');
-    if (gameState.playerIndex === 0) {
-      placementInstructions.textContent = 'Place all your pieces in the bottom half of the board (bottom 5 rows)';
-    } else {
-      placementInstructions.textContent = 'Place all your pieces in the top half of the board (top 5 rows) - your pieces will appear at the bottom from your view';
+    if (placementInstructions) {
+      if (gameState.playerIndex === 0) {
+        placementInstructions.textContent = 'Place all your pieces in the bottom half of the board (bottom 5 rows)';
+      } else {
+        placementInstructions.textContent = 'Place all your pieces in the top half of the board (top 5 rows) - your pieces will appear at the bottom from your view';
+      }
     }
     
     if (!placementPieces.length) {
@@ -532,50 +547,60 @@ function updateUI() {
     }
     
     const bothReady = gameState.playersReady.player1 && gameState.playersReady.player2;
-    document.getElementById('confirm-placement-btn').disabled = placedPieces.length === 0 || bothReady;
+    const confirmBtn = document.getElementById('confirm-placement-btn');
+    if (confirmBtn) confirmBtn.disabled = placedPieces.length === 0 || bothReady;
     
     // Hide end turn button during placement
-    const endTurnBtn = document.getElementById('end-turn-btn');
+    const endTurnBtn = document.getElementById('end-turn-btn-placement');
     if (endTurnBtn) {
       endTurnBtn.classList.add('hidden');
-      endTurnBtn.style.display = 'none';
     }
   // Removed select-starting-player phase - game goes directly to playing phase
   } else if (gameState.phase === 'playing') {
-    // Keep the same screen structure - don't switch screens, just update UI
+    // Keep the same screen (placement-screen) but hide placement-specific elements
     document.getElementById('room-setup').classList.add('hidden');
-    document.getElementById('placement-screen').classList.remove('hidden'); // Keep placement screen visible
+    document.getElementById('placement-screen').classList.remove('hidden');
     document.getElementById('starting-player-screen').classList.add('hidden');
     document.getElementById('game-screen').classList.add('hidden');
+    
+    // Keep room code visible in left panel
+    const roomCodeLeftPlacement = document.getElementById('room-code-left-placement');
+    if (roomCodeLeftPlacement) roomCodeLeftPlacement.classList.remove('hidden');
     
     // Hide placement-specific UI elements
     const pieceSelector = document.getElementById('piece-selector');
     if (pieceSelector) {
-      // Hide the piece list and placement buttons, but keep the container for the end turn button
-      const piecesList = pieceSelector.querySelector('#pieces-list');
-      if (piecesList) piecesList.style.display = 'none';
-      const randomSetupBtn = document.getElementById('random-setup-btn');
-      if (randomSetupBtn) randomSetupBtn.style.display = 'none';
-      const confirmBtn = document.getElementById('confirm-placement-btn');
-      if (confirmBtn) confirmBtn.style.display = 'none';
-      const selectorTitle = pieceSelector.querySelector('h3');
-      if (selectorTitle) selectorTitle.style.display = 'none';
+      // Hide the entire piece selector during gameplay
+      pieceSelector.style.display = 'none';
     }
     const placementInfo = document.getElementById('placement-info');
     if (placementInfo) placementInfo.style.display = 'none';
     const placementTitle = document.getElementById('placement-title');
     if (placementTitle) placementTitle.style.display = 'none';
     
-    // Show end turn button if it's your turn
+    // Show game info during gameplay
+    const gameInfoLeft = document.getElementById('game-info-left-placement');
+    if (gameInfoLeft) {
+      gameInfoLeft.classList.remove('hidden');
+      const currentPlayerIndicator = document.getElementById('current-player-indicator-placement');
+      const phaseIndicator = document.getElementById('phase-indicator-placement');
+      if (currentPlayerIndicator) {
+        const isMyTurn = gameState.currentPlayer === gameState.playerIndex;
+        currentPlayerIndicator.textContent = isMyTurn ? 'Your Turn' : `Player ${gameState.currentPlayer + 1}'s Turn`;
+      }
+      if (phaseIndicator) {
+        phaseIndicator.textContent = `Phase: ${gameState.phase}`;
+      }
+    }
+    
+    // Show end turn button if it's your turn (use placement screen button)
     const isMyTurn = gameState.currentPlayer === gameState.playerIndex;
-    const endTurnBtn = document.getElementById('end-turn-btn');
+    const endTurnBtn = document.getElementById('end-turn-btn-placement');
     if (endTurnBtn) {
       if (isMyTurn) {
         endTurnBtn.classList.remove('hidden');
-        endTurnBtn.style.display = 'block';
       } else {
         endTurnBtn.classList.add('hidden');
-        endTurnBtn.style.display = 'none';
       }
     }
     
@@ -905,7 +930,7 @@ function handleGameClick(x, y) {
       }
       selectedCell = { x, y };
       const pieceName = cell.piece === 'hidden' ? 'piece' : cell.piece;
-      addMessage(`Selected ${pieceName} at (${x}, ${y})`);
+      // Selection is visible on the board, no need for message log
       console.log('Piece selected successfully');
     } else if (cell && cell.player !== gameState.playerIndex) {
       // Clicked opponent piece
@@ -934,7 +959,7 @@ function handleGameClick(x, y) {
     if (selectedCell.x === x && selectedCell.y === y) {
       // Deselect
       selectedCell = null;
-      addMessage('Selection cleared');
+      // Selection cleared is visible on the board, no need for message log
       renderBoard();
       return;
     }
@@ -966,12 +991,26 @@ function handleGameClick(x, y) {
   renderBoard();
 }
 
-document.getElementById('end-turn-btn').addEventListener('click', () => {
-  if (gameState && gameState.currentPlayer === gameState.playerIndex) {
-    socket.emit('end-turn', roomCode);
-    addMessage('Turn ended', 'success');
-  }
-});
+// End turn button event listeners (both screens)
+const endTurnBtn = document.getElementById('end-turn-btn');
+if (endTurnBtn) {
+  endTurnBtn.addEventListener('click', () => {
+    if (gameState && gameState.currentPlayer === gameState.playerIndex) {
+      socket.emit('end-turn', roomCode);
+      addMessage('Turn ended', 'success');
+    }
+  });
+}
+
+const endTurnBtnPlacement = document.getElementById('end-turn-btn-placement');
+if (endTurnBtnPlacement) {
+  endTurnBtnPlacement.addEventListener('click', () => {
+    if (gameState && gameState.currentPlayer === gameState.playerIndex) {
+      socket.emit('end-turn', roomCode);
+      addMessage('Turn ended', 'success');
+    }
+  });
+}
 
 function renderBoard() {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -1610,7 +1649,21 @@ function addMessage(text, type = '') {
   }
   
   // For non-error messages, add to the side panel messages
-  const messages = document.getElementById('game-messages');
+  // Check which screen is active and use appropriate element
+  const placementScreen = document.getElementById('placement-screen');
+  const gameScreen = document.getElementById('game-screen');
+  let messages = null;
+  
+  if (placementScreen && !placementScreen.classList.contains('hidden')) {
+    messages = document.getElementById('game-messages-placement');
+  } else if (gameScreen && !gameScreen.classList.contains('hidden')) {
+    messages = document.getElementById('game-messages');
+  } else {
+    // Fallback: try both
+    messages = document.getElementById('game-messages-placement') || 
+               document.getElementById('game-messages');
+  }
+  
   if (messages) {
     const message = document.createElement('div');
     message.className = `message ${type}`;
