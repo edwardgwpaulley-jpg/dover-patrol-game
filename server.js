@@ -809,6 +809,9 @@ function resolveCombat(attackerPiece, defenderPiece) {
   }
 
   if (attackerPiece === 'Submarine') {
+    if (defenderPiece === 'Submarine') {
+      return { winner: 'both', message: 'Both Submarines destroyed' };
+    }
     if (defenderPiece === '2' || defenderPiece === 'Minelayer') {
       return { winner: 'defender', message: defenderPiece + ' destroys Submarine' };
     }
